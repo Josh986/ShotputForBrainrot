@@ -3,12 +3,12 @@
   "project": {
     "name": "ShotputForBrainrot",
     "displayName": "Shotput for Brainrot",
-    "version": "0.1.0",
-    "description": "A colorful arcade physics incremental tycoon built in UEFN with Verse. Throw a ball, earn coins, upgrade, throw farther, repeat.",
+    "version": "0.2.0",
+    "description": "A colorful arcade physics incremental tycoon built in UEFN with Verse. Throw a ball to reach a Brainrot tier, survive the Giant Brainrot chase home, add the Brainrot to your base for passive income, then upgrade and throw farther.",
     "engine": "UEFN",
     "language": "Verse",
     "license": "MIT",
-    "genre": ["Casual", "Incremental", "Physics", "Arcade"]
+    "genre": ["Casual", "Incremental", "Physics", "Arcade", "Brainrot"]
   },
   "notes": [
     "This descriptor is a human-readable reference for the project. UEFN generates its",
@@ -23,6 +23,7 @@
         "Core/GameConstants.verse",
         "Core/GameTypes.verse",
         "Core/BallCatalog.verse",
+        "Core/BrainrotCatalog.verse",
         "Core/Localization.verse"
       ],
       "Physics": ["Physics/PhysicsSystem.verse"],
@@ -31,6 +32,8 @@
       "Shop": ["Shop/ShopSystem.verse"],
       "Save": ["Save/SaveSystem.verse"],
       "Distance": ["Distance/DistanceTrackingSystem.verse"],
+      "Brainrot": ["Brainrot/BrainrotSystem.verse"],
+      "Base": ["Base/BaseSystem.verse"],
       "UI": ["UI/UISystem.verse"],
       "Root": ["GameManager.verse"]
     }
@@ -38,8 +41,9 @@
   "mainDevice": "game_manager",
   "editableReferences": {
     "BallProp": "creative_prop — the flying ball",
-    "ThrowButton": "button_device — press to charge / release to throw",
-    "ThrowCircleMarker": "creative_prop — defines the launch origin"
+    "ThrowButton": "button_device — press to charge / release to throw; also taps to sprint during the chase",
+    "ThrowCircleMarker": "creative_prop — defines the launch origin (your base / home)",
+    "GiantBrainrotProp": "creative_prop — the Giant Brainrot shown chasing you during the run home (cosmetic)"
   },
   "dependencies": {
     "verseApis": [

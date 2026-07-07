@@ -24,9 +24,12 @@ ui_system<public> := class:
     # Mutable text/bar widgets, created in Build() and updated at runtime.
     var CoinsText<private>:text_block = text_block{DefaultText := "0 coins"}
     var BallText<private>:text_block = text_block{DefaultText := "Stone"}
+    var IncomeText<private>:text_block = text_block{DefaultText := "Income: 0/s  (0 Brainrots)"}
     var DistanceText<private>:text_block = text_block{DefaultText := "0 m"}
     var BestText<private>:text_block = text_block{DefaultText := "Best: 0 m"}
     var RewardText<private>:text_block = text_block{DefaultText := ""}
+    # The bottom-center bar doubles as the charge meter (before a throw) AND the
+    # Giant Brainrot escape bar (during the run home).
     var ChargeBar<private>:progress_bar = progress_bar{}
 
     # The canvas holding everything, added to each player's HUD.
@@ -51,7 +54,7 @@ ui_system<public> := class:
                     Anchors := anchors{Minimum := vector2{X := 0.0, Y := 0.0}, Maximum := vector2{X := 0.0, Y := 0.0}}
                     Offsets := margin{Left := 40.0, Top := 40.0, Right := 0.0, Bottom := 0.0}
                     Alignment := vector2{X := 0.0, Y := 0.0}
-                    Widget := MakeVerticalStack(array{CoinsText, BallText})
+                    Widget := MakeVerticalStack(array{CoinsText, BallText, IncomeText})
                 # Top-right cluster: live distance + best.
                 canvas_slot:
                     Anchors := anchors{Minimum := vector2{X := 1.0, Y := 0.0}, Maximum := vector2{X := 1.0, Y := 0.0}}
@@ -83,6 +86,34 @@ ui_system<public> := class:
     UpdateCoins<public>(Coins:int, BallName:string):void=
         CoinsText.SetText(FormatCoins(Coins))
         BallText.SetText(ToMessage("Ball: {BallName}"))
+
+    # Update the top-left passive-income readout (coins/sec + base population).
+    UpdateIncome<public>(PerSecond:int, TotalBrainrots:int):void=
+        IncomeText.SetText(ToMessage("Income: {PerSecond}/s  ({TotalBrainrots} Brainrots)"))
+
+    # Announce which Brainrot just spawned and that the chase is on. Shown center.
+    ShowBrainrotSpawn<public>(BrainrotName:string):void=
+        RewardText.SetText(ToMessage("You are a {BrainrotName}!  RUN HOME — tap to sprint!"))
+        RewardText.SetTextColor(NamedColors.Yellow)
+
+    # Drive the escape bar + live countdown during the Giant Brainrot chase. The
+    # bottom-center bar is repurposed as the escape meter; it flashes red when time
+    # is nearly up so the danger reads instantly.
+    UpdateChase<public>(EscapeProgress:float, TimeRemaining:float):void=
+        ChargeBar.SetProgress(EscapeProgress)
+        BarColor := if (TimeRemaining < 1.5) { NamedColors.Red } else { NamedColors.Lime }
+        ChargeBar.SetBarFillColor(BarColor)
+        RewardText.SetText(ToMessage("RUN!  {FloatToMeters(TimeRemaining * 10.0)} — tap to sprint!"))
+
+    # Show the outcome of a chase: captured (joined base) or eaten (lost it).
+    ShowCaptureResult<public>(Escaped:logic, BrainrotName:string, IncomeAdded:int):void=
+        ChargeBar.SetProgress(0.0)
+        if (Escaped?):
+            RewardText.SetText(ToMessage("CAPTURED {BrainrotName}!  +{IncomeAdded}/s income"))
+            RewardText.SetTextColor(NamedColors.Lime)
+        else:
+            RewardText.SetText(ToMessage("EATEN!  The Giant Brainrot got your {BrainrotName}"))
+            RewardText.SetTextColor(NamedColors.Red)
 
     # Update the top-right distance readout during flight.
     UpdateDistance<public>(CurrentMeters:float, BestMeters:float):void=

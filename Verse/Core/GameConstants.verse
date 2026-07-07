@@ -97,3 +97,69 @@ MarkerIntervalMeters<public>:int = 50
 
 # Maximum field length in meters (used for stadium sizing / marker generation).
 StadiumLengthMeters<public>:int = 2000
+
+# --------------------------------------------------------------------------------------
+# BRAINROT TIER THRESHOLDS (the *real* progression driver)
+# --------------------------------------------------------------------------------------
+# Distance no longer pays coins directly. Instead the distance your ball reaches
+# decides WHICH Brainrot tier spawns at the landing spot. Capture it (survive the
+# chase home) and it joins your base as a permanent income source.
+#
+# Minimum distance (meters) required to spawn each tier. A throw awards the highest
+# tier whose threshold it meets.
+BrainrotCommonMinMeters<public>:float    = 0.0      # 0 - 100 m
+BrainrotUncommonMinMeters<public>:float  = 100.0    # 100 - 300 m
+BrainrotRareMinMeters<public>:float      = 300.0    # 300 - 600 m
+BrainrotEpicMinMeters<public>:float      = 600.0    # 600 - 1000 m
+BrainrotLegendaryMinMeters<public>:float = 1000.0   # 1000 - 2000 m
+BrainrotMythicMinMeters<public>:float    = 2000.0   # 2000 m +
+BrainrotSecretMinMeters<public>:float    = 5000.0   # Secret Zone
+
+# Passive income each captured Brainrot of a tier generates, per second.
+BrainrotCommonIncome<public>:int    = 1
+BrainrotUncommonIncome<public>:int  = 3
+BrainrotRareIncome<public>:int      = 10
+BrainrotEpicIncome<public>:int      = 30
+BrainrotLegendaryIncome<public>:int = 100
+BrainrotMythicIncome<public>:int    = 500
+BrainrotSecretIncome<public>:int    = 5000
+
+# --------------------------------------------------------------------------------------
+# GIANT BRAINROT CHASE (the "return trip" that gives every throw real stakes)
+# --------------------------------------------------------------------------------------
+# After you transform into the freshly-spawned Brainrot you must run home before the
+# Giant Brainrot catches you. We model the run as a short skill race: a countdown
+# ticks toward capture while the player taps/holds the run input to fill an escape
+# bar. Higher tiers = a hungrier, faster Giant = harder escape.
+
+# Seconds the player has to escape at the lowest tier (Common). Higher tiers subtract.
+ChaseBaseTimeSeconds<public>:float = 6.0
+
+# Seconds removed from the escape window per tier index (Common=0 ... Secret=6).
+ChaseTimePenaltyPerTier<public>:float = 0.55
+
+# Minimum escape window regardless of tier, so the top tiers stay *hard* but fair.
+ChaseMinTimeSeconds<public>:float = 2.5
+
+# How much one run-input tap advances the escape bar (0..1 of the bar).
+ChaseTapProgress<public>:float = 0.12
+
+# The escape bar passively decays this much per second (keeps the pressure on).
+ChaseDecayPerSecond<public>:float = 0.10
+
+# Tick period (seconds) for the chase countdown/decay loop.
+ChaseTickPeriod<public>:float = 0.1
+
+# --------------------------------------------------------------------------------------
+# PASSIVE INCOME
+# --------------------------------------------------------------------------------------
+# How often (seconds) collected Brainrots pay out into the player's wallet.
+PassiveIncomeTickPeriod<public>:float = 1.0
+
+# On a successful capture, immediately grant this many SECONDS' worth of the new
+# Brainrot's income as a one-time "welcome" bonus. Makes capturing feel rewarding
+# instantly and bootstraps the economy — set to 0 for pure passive-only income.
+CaptureBonusSeconds<public>:float = 8.0
+
+# How long (seconds) the reward / capture-result banner stays on screen.
+BannerDisplaySeconds<public>:float = 2.2
