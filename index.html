@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shotput for Brainrot — UEFN Arcade Tycoon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #0f3460 0%, #533483 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 3em;
+            color: #00d9ff;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .tagline {
+            font-size: 1.3em;
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: #b8b8d1;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+            margin: 10px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.6);
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+        
+        .cta-button.secondary:hover {
+            box-shadow: 0 8px 30px rgba(0, 217, 255, 0.6);
+        }
+        
+        section {
+            background: rgba(22, 33, 62, 0.7);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h2 {
+            color: #00d9ff;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+        }
+        
+        h3 {
+            color: #ff6b9d;
+            font-size: 1.5em;
+            margin: 30px 0 15px;
+        }
+        
+        .loop-diagram {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid #00d9ff;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .loop-step {
+            margin: 15px 0;
+            padding-left: 20px;
+            border-left: 3px solid #ff6b9d;
+        }
+        
+        .loop-step strong {
+            color: #00d9ff;
+            font-size: 1.1em;
+        }
+        
+        .tier-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .tier-table th {
+            background: linear-gradient(135deg, #0f3460 0%, #533483 100%);
+            color: #00d9ff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .tier-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+        
+        .tier-table tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+        
+        .tier-common { color: #9e9e9e; }
+        .tier-uncommon { color: #4caf50; }
+        .tier-rare { color: #2196f3; }
+        .tier-epic { color: #9c27b0; }
+        .tier-legendary { color: #ff9800; }
+        .tier-mythic { color: #e91e63; }
+        .tier-secret { color: #00d9ff; font-weight: bold; }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: rgba(15, 52, 96, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 157, 0.5);
+        }
+        
+        .feature-card h4 {
+            color: #ff6b9d;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7a7a9e;
+            font-size: 0.9em;
+        }
+        
+        footer a {
+            color: #00d9ff;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .highlight {
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .tagline {
+                font-size: 1.1em;
+            }
+            
+            section {
+                padding: 25px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Shotput for Brainrot</h1>
+            <p class="tagline">The Arcade Tycoon You Never Knew You Needed</p>
+            <p class="subtitle">
+                Throw balls. Collect cursed Brainrots. Escape a giant monster. Build your passive income empire. 
+                A UEFN/Fortnite Creative game where distance doesn't give you money—it unlocks better workers.
+            </p>
+            <div>
+                <a href="https://github.com/Josh986/ShotputForBrainrot" class="cta-button secondary" target="_blank">
+                    📂 View on GitHub
+                </a>
+                <a href="https://github.com/Josh986/ShotputForBrainrot#-how-to-run" class="cta-button" target="_blank">
+                    🚀 Play in UEFN
+                </a>
+            </div>
+        </header>
+
+        <section>
+            <h2>🧠 The Core Loop</h2>
+            <p>This isn't your typical "throw far = more money" game. Distance is an <span class="highlight">unlock mechanic</span>, not a payout:</p>
+            
+            <div class="loop-diagram">
+<strong>1.</strong> Charge your throw (nail the perfect window for +35% power)<br>
+<strong>2.</strong> Ball launches → physics simulation → lands at distance X<br>
+<strong>3.</strong> A <strong>Brainrot</strong> of that distance tier spawns at the landing spot<br>
+<strong>4.</strong> You <strong>become</strong> that Brainrot (yes, really)<br>
+<strong>5.</strong> The <strong>Giant Brainrot</strong> wakes up and chases you<br>
+<strong>6.</strong> <strong>RUN HOME</strong> (tap frantically to fill the escape bar before time runs out)<br>
+<strong>7.</strong> Made it? → Brainrot added to your base, generates coins/sec <strong>forever</strong><br>
+         Got caught? → You lose it; throw again<br>
+<strong>8.</strong> Passive income builds up → spend on throw upgrades + better balls<br>
+<strong>9.</strong> Throw farther → reach higher tiers → unlock <strong>$5000/sec</strong> Brainrots<br>
+<strong>10.</strong> <span style="color: #00d9ff;">REPEAT</span> ∞
+            </div>
+        </section>
+
+        <section>
+            <h2>💰 Brainrot Tiers — Your Money Printers</h2>
+            <p>Every throw spawns a Brainrot based on distance. Capture it, and it generates passive income <strong>every second</strong>:</p>
+            
+            <table class="tier-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Distance Gate</th>
+                        <th>Income/Second</th>
+                        <th>Chase Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tier-common">Common</td>
+                        <td>0–100 m</td>
+                        <td>$1/s</td>
+                        <td>🟢 Easy (most time)</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-uncommon">Uncommon</td>
+                        <td>100–300 m</td>
+                        <td>$3/s</td>
+                        <td>🟢 Easy</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-rare">Rare</td>
+                        <td>300–600 m</td>
+                        <td>$10/s</td>
+                        <td>🟡 Medium</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-epic">Epic</td>
+                        <td>600–1000 m</td>
+                        <td>$30/s</td>
+                        <td>🟡 Medium</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-legendary">Legendary</td>
+                        <td>1000–2000 m</td>
+                        <td>$100/s</td>
+                        <td>🟠 Hard</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-mythic">Mythic</td>
+                        <td>2000 m+</td>
+                        <td>$500/s</td>
+                        <td>🔴 Very Hard</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-secret">SECRET</td>
+                        <td>Secret Zone</td>
+                        <td>$5000/s</td>
+                        <td>💀 Brutal (least time)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="margin-top: 20px; font-style: italic; color: #b8b8d1;">
+                Pro tip: Higher tiers = more money but scarier chases. That $5000/s Secret Brainrot? 
+                You'll have seconds to tap your way home before the Giant eats you.
+            </p>
+        </section>
+
+        <section>
+            <h2>✨ What Makes It Special</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="emoji">⚡</span>
+                    <h4>Skill-Based Throws</h4>
+                    <p>Charge meter with a perfect-window bonus. Master the timing for 35% extra power.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="emoji">🏃</span>
+                    <h4>The Chase Is Real</h4>
+                    <p>Every throw = a skill race. Higher tiers give you less time to escape. Pure adrenaline.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="emoji">💰</span>
+                    <h4>Passive Income Empire</h4>
+                    <p>Captured Brainrots pay you forever. Watch your coin counter climb while you line up the next throw.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="emoji">🎯</span>
+                    <h4>Two Upgrade Trees</h4>
+                    <p>20 levels of player stats (Strength, Speed, Crit, Multiplier) + 10 ball rarities to unlock.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="emoji">🌍</span>
+                    <h4>Arcade Physics</h4>
+                    <p>Custom ballistics, bounces, friction. Feels like an exaggerated sports game—in the best way.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="emoji">💾</span>
+                    <h4>Full Progression</h4>
+                    <p>Save system tracks coins, best distance, upgrades, and your entire Brainrot collection.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🛠️ Tech Stack</h2>
+            <p>Built entirely in <strong>Verse</strong> (Unreal Engine for Fortnite's scripting language) for <strong>UEFN</strong> (Unreal Editor for Fortnite). This is a proof-of-concept game you can play in Fortnite Creative.</p>
+            
+            <h3>Architecture Highlights</h3>
+            <ul style="line-height: 2; margin-left: 20px; color: #b8b8d1;">
+                <li>🎮 <strong>9 modular systems</strong> (Physics, Throw, Brainrot, Base, Shop, Save, Distance, UI, GameManager)</li>
+                <li>📐 <strong>Data-driven design</strong> — all balance numbers in one file (<code>GameConstants.verse</code>)</li>
+                <li>🔒 <strong>Side-effect isolation</strong> — pure calculators separated from state mutation</li>
+                <li>📦 <strong>No circular dependencies</strong> — clean downward dependency graph</li>
+                <li>📚 <strong>Fully documented</strong> — README, Architecture Deep Dive, Technical Reference, Setup Guide</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>🎮 How to Play It</h2>
+            <p><strong>You'll need:</strong></p>
+            <ul style="line-height: 2; margin-left: 20px; color: #b8b8d1; margin-bottom: 20px;">
+                <li>Unreal Editor for Fortnite (UEFN) — <a href="https://dev.epicgames.com/documentation/en-us/fortnite-creative/unreal-editor-for-fortnite" target="_blank" style="color: #00d9ff;">free download</a></li>
+                <li>An Epic Games account with Creator access</li>
+            </ul>
+            
+            <p><strong>Then:</strong></p>
+            <ol style="line-height: 2; margin-left: 20px; color: #b8b8d1;">
+                <li>Clone/download the <a href="https://github.com/Josh986/ShotputForBrainrot" target="_blank" style="color: #00d9ff;">GitHub repo</a></li>
+                <li>Follow the <a href="https://github.com/Josh986/ShotputForBrainrot/blob/main/Docs/SETUP.md" target="_blank" style="color: #00d9ff;">Setup Guide</a> to import the Verse code</li>
+                <li>Place the <code>game_manager</code> device in your island</li>
+                <li>Hit Play and start throwing!</li>
+            </ol>
+            
+            <div style="margin-top: 30px; padding: 20px; background: rgba(255, 107, 157, 0.1); border-left: 4px solid #ff6b9d; border-radius: 5px;">
+                <strong style="color: #ff6b9d;">Note:</strong> This is Fortnite Creative content—it runs <em>inside</em> Fortnite/UEFN, not in a web browser. 
+                Think of it like a Minecraft mod or Roblox game. This webpage is just to share the idea!
+            </div>
+        </section>
+
+        <section>
+            <h2>🗺️ What's Next</h2>
+            <p>This is v0.2.0—the <strong>Brainrot Collection Loop</strong> release. On the roadmap:</p>
+            <ul style="line-height: 2; margin-left: 20px; color: #b8b8d1;">
+                <li>🎭 <strong>Real player transformation</strong> — become the Brainrot visually (skin/prop swap)</li>
+                <li>👹 <strong>Real Giant Brainrot NPC</strong> — pathfinding AI chase instead of the escape bar</li>
+                <li>🏠 <strong>Base "farm" visuals</strong> — see your captured Brainrots chilling around your base</li>
+                <li>💾 <strong>Cross-session saves</strong> — persistent progression using UEFN's <code>&lt;persistable&gt;</code></li>
+                <li>🎨 <strong>VFX + audio</strong> — trails, impacts, chase heartbeat, capture fanfare</li>
+                <li>🏆 <strong>Prestige system</strong> — reset for permanent multipliers</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>
+                Made with ☕ and chaos by <strong><a href="https://github.com/Josh986" target="_blank">Joshua Ly</a></strong><br>
+                <a href="https://github.com/Josh986/ShotputForBrainrot" target="_blank">View Source on GitHub</a> • 
+                <a href="https://github.com/Josh986/ShotputForBrainrot/blob/main/LICENSE" target="_blank">MIT License</a><br>
+                <span style="font-size: 0.85em; margin-top: 10px; display: block;">
+                    Unofficial fan project • Not affiliated with Epic Games • Epic/Fortnite/UEFN assets subject to Epic's EULA
+                </span>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
