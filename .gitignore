@@ -1,0 +1,49 @@
+# --- UEFN / Unreal build & intermediate artifacts ---
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+.vscode/
+*.VC.db
+*.opensdf
+*.sdf
+*.suo
+*.xcodeproj
+*.xcworkspace
+
+# Verse build intermediates
+.vscode-verse/
+**/CrashReportClient/
+**/*.verse.gen
+
+# UEFN-generated project/plugin files (recreated in-editor; not source of truth here)
+*.uefnproject
+*.uplugin
+*.uproject
+
+# Epic / Fortnite binary content — never commit redistributable assets
+Content/**/*.uasset
+Content/**/*.umap
+Plugins/**/*.uasset
+Plugins/**/*.umap
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+*.swp
+
+# Auto-generated document previews (we keep Markdown as the source of truth)
+Docs/*.pdf
+Docs/*.docx
+UI/*.pdf
+UI/*.docx
+Maps/*.pdf
+Maps/*.docx
+Assets/*.pdf
+Assets/*.docx
+*.pdf
+*.docx

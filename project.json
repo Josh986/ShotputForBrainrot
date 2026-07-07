@@ -1,0 +1,56 @@
+{
+  "$schema": "https://dev.epicgames.com/documentation/en-us/uefn/verse-language-reference",
+  "project": {
+    "name": "ShotputForBrainrot",
+    "displayName": "Shotput for Brainrot",
+    "version": "0.1.0",
+    "description": "A colorful arcade physics incremental tycoon built in UEFN with Verse. Throw a ball, earn coins, upgrade, throw farther, repeat.",
+    "engine": "UEFN",
+    "language": "Verse",
+    "license": "MIT",
+    "genre": ["Casual", "Incremental", "Physics", "Arcade"]
+  },
+  "notes": [
+    "This descriptor is a human-readable reference for the project. UEFN generates its",
+    "own project files (.uefnproject, .uplugin, VerseProject settings) when you create",
+    "the project in the editor. Do not rely on this file being read by UEFN.",
+    "Recreate the Verse folder layout in-editor as described in Docs/SETUP.md."
+  ],
+  "verseModules": {
+    "root": "Verse",
+    "modules": {
+      "Core": [
+        "Core/GameConstants.verse",
+        "Core/GameTypes.verse",
+        "Core/BallCatalog.verse",
+        "Core/Localization.verse"
+      ],
+      "Physics": ["Physics/PhysicsSystem.verse"],
+      "Throw": ["Throw/ThrowSystem.verse"],
+      "Economy": ["Economy/EconomySystem.verse"],
+      "Shop": ["Shop/ShopSystem.verse"],
+      "Save": ["Save/SaveSystem.verse"],
+      "Distance": ["Distance/DistanceTrackingSystem.verse"],
+      "UI": ["UI/UISystem.verse"],
+      "Root": ["GameManager.verse"]
+    }
+  },
+  "mainDevice": "game_manager",
+  "editableReferences": {
+    "BallProp": "creative_prop — the flying ball",
+    "ThrowButton": "button_device — press to charge / release to throw",
+    "ThrowCircleMarker": "creative_prop — defines the launch origin"
+  },
+  "dependencies": {
+    "verseApis": [
+      "/Verse.org/Simulation",
+      "/Verse.org/Random",
+      "/Verse.org/Colors",
+      "/Fortnite.com/Devices",
+      "/Fortnite.com/Playspaces",
+      "/Fortnite.com/UI",
+      "/UnrealEngine.com/Temporary/SpatialMath",
+      "/UnrealEngine.com/Temporary/UI"
+    ]
+  }
+}
